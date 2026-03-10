@@ -25,6 +25,7 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     Ydir = -165
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Powerupp, function (sprite, otherSprite) {
+    sprites.destroy(Mega_star)
     sprites.destroyAllSpritesOfKind(SpriteKind.Projectile)
     mySprite.sayText("All spawned zombies have been destroyed  ", 2000, true)
 })
@@ -48,7 +49,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         `, mySprite, Xdir, Ydir)
     Bullet.setKind(SpriteKind.Bulletammo)
-    pause(417)
+    pause(378)
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     mySprite.setImage(img`
@@ -155,7 +156,7 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     Ydir = 165
 })
 info.onScore(150, function () {
-    mySprite.sayText(" Your bullet speed went up but so did the zombie's new objective reach score 150")
+    mySprite.sayText(" Your bullet speed went up but so did the zombie's new objective reach score 200")
     Ydir = 500
     Ydir = -500
     Xdir = 500
@@ -233,7 +234,7 @@ info.onScore(200, function () {
     if (enemyhelath <= 1) {
         sprites.destroy(myEnemy)
         game.gameOver(true)
-        game.setGameOverMessage(true, "game over u killed the boss")
+        game.setGameOverMessage(true, "game over u win u killed the boss")
     }
 })
 sprites.onOverlap(SpriteKind.Bulletammo, SpriteKind.Enemy, function (sprite, otherSprite) {
@@ -246,9 +247,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 })
 let enemyhelath = 0
 let myEnemy: Sprite = null
-let Mega_star: Sprite = null
 let Zombies: Sprite = null
 let Bullet: Sprite = null
+let Mega_star: Sprite = null
 let Ydir = 0
 let Xdir = 0
 let mySprite: Sprite = null
