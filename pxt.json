@@ -1,5 +1,6 @@
 {
     "name": "zombie battle:alpha",
+    "version": "0.1.0",
     "description": "its my first big project hope u like it",
     "dependencies": {
         "device": "*"
