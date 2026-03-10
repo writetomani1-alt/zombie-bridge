@@ -24,13 +24,9 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     Xdir = 0
     Ydir = -165
 })
-info.onScore(250, function () {
-    game.gameOver(true)
-})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Powerupp, function (sprite, otherSprite) {
-    mySprite.sayText("All spawned zombies have been destroyed  ", 2000, true)
     sprites.destroyAllSpritesOfKind(SpriteKind.Projectile)
-    sprites.destroyAllSpritesOfKind(SpriteKind.Powerupp)
+    mySprite.sayText("All spawned zombies have been destroyed  ", 2000, true)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     Bullet = sprites.createProjectileFromSprite(img`
@@ -52,7 +48,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         `, mySprite, Xdir, Ydir)
     Bullet.setKind(SpriteKind.Bulletammo)
-    pause(420)
+    pause(417)
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     mySprite.setImage(img`
@@ -79,11 +75,11 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 info.onScore(100, function () {
     if (true) {
         mySprite.sayText(" Your bullet speed went up but so did the zombie's and a powerup has spawned somewhere in the map new objective reach score 150")
-        pause(3700)
         Ydir = 300
         Ydir = -300
         Xdir = 300
         Xdir = -300
+        Zombies.follow(mySprite, 41)
         Mega_star = sprites.create(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -102,7 +98,6 @@ info.onScore(100, function () {
             . . . . . . . . b . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, SpriteKind.Powerupp)
-        Zombies.follow(mySprite, 41)
         tiles.placeOnRandomTile(Mega_star, sprites.dungeon.floorLight2)
     }
 })
@@ -161,7 +156,6 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 info.onScore(150, function () {
     mySprite.sayText(" Your bullet speed went up but so did the zombie's new objective reach score 150")
-    pause(3700)
     Ydir = 500
     Ydir = -500
     Xdir = 500
@@ -181,14 +175,13 @@ info.onScore(50, function () {
     }
 })
 info.onScore(200, function () {
-    mySprite.sayText(" Your bullet speed went up ! But the boss has appeared it gives 1.5 point not 1 ! But it's super fast and if u touch it game over!, the zombie's speed lowered .new objective reach score 250")
-    pause(3700)
+    mySprite.sayText(" Your bullet speed went up ! But the boss has appeared if u touch it game over!, the zombie's speed lowered .new objective kiill boss")
     Ydir = 500
     Ydir = -500
     Xdir = 500
     Xdir = -500
     sprites.destroy(Zombies)
-    Zombies.follow(mySprite, 32)
+    Zombies.follow(mySprite, 27)
     myEnemy = sprites.create(img`
         ........................
         ........................
@@ -215,24 +208,51 @@ info.onScore(200, function () {
         ........................
         ........................
         `, SpriteKind.Enemy)
+    enemyhelath = 10
     myEnemy.setPosition(5, 1)
     myEnemy.follow(mySprite, 28)
-    info.changeScoreBy(1)
+    Mega_star = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . b . . . . . . . 
+        . . . . . . . b d b . . . . . . 
+        . . . . . . . c d c . . . . . . 
+        . . . . . . . c 2 c . . . . . . 
+        . . . . . . c d 2 d c . . . . . 
+        . . . b c c d 2 2 2 d c c b . . 
+        . . b d d 9 9 9 f 7 7 7 d d b . 
+        . . . b c c d 9 5 7 d c c b . . 
+        . . . . . . c d 5 d c . . . . . 
+        . . . . . . . c 5 c . . . . . . 
+        . . . . . . . c d c . . . . . . 
+        . . . . . . . b d b . . . . . . 
+        . . . . . . . . b . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Powerupp)
+    tiles.placeOnRandomTile(Mega_star, sprites.dungeon.floorLight2)
+    if (enemyhelath <= 1) {
+        sprites.destroy(myEnemy)
+        game.gameOver(true)
+        game.setGameOverMessage(true, "game over u killed the boss")
+    }
 })
 sprites.onOverlap(SpriteKind.Bulletammo, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(Bullet)
-    info.changeScoreBy(1.5)
+    enemyhelath += -1
+    myEnemy.sayText(enemyhelath, 3300, false)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     game.gameOver(false)
 })
+let enemyhelath = 0
 let myEnemy: Sprite = null
-let Zombies: Sprite = null
 let Mega_star: Sprite = null
+let Zombies: Sprite = null
 let Bullet: Sprite = null
 let Ydir = 0
 let Xdir = 0
 let mySprite: Sprite = null
+game.showLongText("Tutorial press A to fire the bullet goes in the direction u face u might wanna pay attention to the text bubble from the charecter move joystick to play", DialogLayout.Full)
 info.setLife(25)
 mySprite = sprites.create(img`
     . . . . . . . . . . . . . . . . 
@@ -256,8 +276,6 @@ mySprite.sayText("Objective- reach score 50")
 controller.moveSprite(mySprite)
 scene.cameraFollowSprite(mySprite)
 tiles.setCurrentTilemap(tilemap`level1`)
-story.printCharacterText("Where am i.....")
-story.setSoundEnabled(true)
 game.onUpdateInterval(390, function () {
     Zombies = sprites.createProjectileFromSide(img`
         . . . . . . . . . . . . . . . . 
