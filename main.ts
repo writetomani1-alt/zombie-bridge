@@ -49,7 +49,8 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . . . . . . . . . . . . . 
         `, mySprite, Xdir, Ydir)
     Bullet.setKind(SpriteKind.Bulletammo)
-    pause(378)
+    pause(250)
+    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     mySprite.setImage(img`
@@ -231,7 +232,7 @@ info.onScore(200, function () {
         . . . . . . . . . . . . . . . . 
         `, SpriteKind.Powerupp)
     tiles.placeOnRandomTile(Mega_star, sprites.dungeon.floorLight2)
-    if (enemyhelath <= 1) {
+    if (enemyhelath == 0) {
         sprites.destroy(myEnemy)
         game.gameOver(true)
         game.setGameOverMessage(true, "game over u win u killed the boss")
